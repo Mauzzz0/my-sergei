@@ -1,0 +1,14 @@
+POST /posts HTTP/1.1
+Host: jsonplaceholder.typicode.com
+Content-Type: application/json
+User-Agent: sdkfnsdkfn
+
+{
+  "id": 101,
+  "title": "",
+  "body": "",
+  "userId": 1
+}
+
+{
+  "id": 101,
