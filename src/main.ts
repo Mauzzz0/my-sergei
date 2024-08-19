@@ -1,27 +1,23 @@
 import express from 'express';
 
-import { logRoutes } from './log.routes';
+import { privateGuard } from './guard/private.guard';
+import { logMiddleware } from './middlewares';
+import { errorHandler } from './middlewares/error.handler';
 
 const server = express();
 
-server.use(express.json());
+server.use(logMiddleware);
+server.use(privateGuard);
 
-const port = 2000;
+server.get('/task', (req, res) => {
+  console.log('Начало обработки запроса!');
+  if (Math.random() > 0.5) {
+    throw Error('Шанс на ошибку сработал!');
+  }
 
-const userRouter = express.Router();
-
-userRouter.get('/profile', (req, res) => {
-  res.json({ id: 10, name: 'chris' });
+  res.send('Hello World!');
 });
 
-userRouter.get('/:name', (req, res) => {
-  res.json({ name: req.params.name });
-});
+server.use(errorHandler);
 
-server.use('/user', userRouter);
-
-logRoutes(server);
-
-server.listen(port, () => {
-  console.log(`Сервер запущен на порту ${port}`);
-});
+server.listen(2000);
