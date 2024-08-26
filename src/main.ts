@@ -2,6 +2,7 @@ import 'reflect-metadata';
 
 import express from 'express';
 
+import { logRoutes } from './bootstrap';
 import { privateGuard } from './guard/private.guard';
 import { logMiddleware } from './middlewares';
 import { errorHandler } from './middlewares/error.handler';
@@ -15,6 +16,8 @@ export const bootstrap = async () => {
   server.use(privateGuard);
 
   server.use('/task', TaskRouter);
+
+  logRoutes(server);
 
   server.use(errorHandler);
 
