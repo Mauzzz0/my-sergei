@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 
 import { CreateTaskDto, IdNumberDto } from '../../dto';
 import { validate } from '../../validation';
 import { TaskService } from './task.service';
 
-export const TaskController = {
+const TaskController = {
   getById(req: Request, res: Response) {
     const { id } = validate(IdNumberDto, req.params);
 
@@ -21,3 +21,8 @@ export const TaskController = {
     res.json(task);
   },
 };
+
+export const TaskRouter = express.Router();
+
+TaskRouter.get('/:id', TaskController.getById);
+TaskRouter.post('', TaskController.create);

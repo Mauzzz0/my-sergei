@@ -5,7 +5,7 @@ import express from 'express';
 import { privateGuard } from './guard/private.guard';
 import { logMiddleware } from './middlewares';
 import { errorHandler } from './middlewares/error.handler';
-import { TaskController } from './modules/task/task.controller';
+import { TaskRouter } from './modules/task/task.controller';
 
 export const bootstrap = async () => {
   const server = express();
@@ -14,8 +14,7 @@ export const bootstrap = async () => {
   server.use(logMiddleware);
   server.use(privateGuard);
 
-  server.get('/task/:id', TaskController.getById);
-  server.post('/task', TaskController.create);
+  server.use('/task', TaskRouter);
 
   server.use(errorHandler);
 
