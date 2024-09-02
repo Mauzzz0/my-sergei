@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node ./src/main.ts",
     "start:watch": "nodemon ./src/main.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "generate": "ts-node ./src/cli/generate.ts"
   },
   "author": "",
   "license": "ISC",
