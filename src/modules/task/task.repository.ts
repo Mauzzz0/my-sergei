@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
+import { PaginationDto } from '../../shared/pagination.dto';
 import { Task } from './task.types';
 
 let storage: Task[] = [];
@@ -14,6 +15,15 @@ if (existsSync(filename)) {
 }
 
 export const TaskRepository = {
+  size() {
+    return storage.length;
+  },
+
+  getAll(pagination: PaginationDto) {
+    const start = pagination.offset;
+    return storage.slice(start, start + pagination.limit);
+  },
+
   getById(id: Task['id']): Task | undefined {
     return storage.find((x) => x.id === id);
   },
