@@ -1,9 +1,8 @@
 import express, { Request, Response } from 'express';
 
-import { CreateTaskDto } from '../../dto';
 import { IdNumberDto } from '../../shared';
 import { validate } from '../../validation';
-import { FindAllTasksQueryDto } from './dto';
+import { CreateTaskDto, FindAllTasksQueryDto } from './dto';
 import { TaskService } from './task.service';
 
 const TaskController = {

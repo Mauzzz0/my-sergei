@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
-import { PaginationDto } from '../../shared/pagination.dto';
+import { SortBy } from '../../shared';
+import { FindAllTasksQueryDto } from './dto';
 import { Task } from './task.types';
 
 let storage: Task[] = [];
@@ -19,9 +20,18 @@ export const TaskRepository = {
     return storage.length;
   },
 
-  getAll(pagination: PaginationDto) {
-    const start = pagination.offset;
-    return storage.slice(start, start + pagination.limit);
+  getAll(pagination: FindAllTasksQueryDto): Task[] {
+    const { sortBy, sort, offset, limit } = pagination;
+
+    return storage
+      .sort((a, b) => {
+        if (a[sort] > b[sort]) {
+          return sortBy === SortBy.asc ? 1 : -1;
+        }
+
+        return sortBy === SortBy.asc ? -1 : 1;
+      })
+      .slice(offset, offset + limit);
   },
 
   getById(id: Task['id']): Task | undefined {

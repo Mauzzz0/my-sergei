@@ -1,4 +1,4 @@
-export type Pagination<T> = {
+export type Paginated<T> = {
   total: number;
   limit: number;
   offset: number;

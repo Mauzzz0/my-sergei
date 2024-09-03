@@ -1,2 +1,4 @@
 export * from './id.number.dto';
-export * from './pagination';
+export * from './paginated';
+export * from './pagination.dto';
+export * from './sortBy.enum';

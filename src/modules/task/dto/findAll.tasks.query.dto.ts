@@ -1,6 +1,6 @@
 import { IsEnum } from 'class-validator';
 
-import { PaginationDto } from '../../../shared/pagination.dto';
+import { PaginationDto, SortBy } from '../../../shared';
 
 enum FindAllTasksSortEnum {
   title = 'title',
@@ -9,5 +9,8 @@ enum FindAllTasksSortEnum {
 
 export class FindAllTasksQueryDto extends PaginationDto {
   @IsEnum(FindAllTasksSortEnum)
-  sort: FindAllTasksSortEnum;
+  sort: FindAllTasksSortEnum = FindAllTasksSortEnum.title;
+
+  @IsEnum(SortBy)
+  sortBy: SortBy = SortBy.asc;
 }

@@ -1,9 +1,10 @@
-import { PaginationDto } from '../../shared/pagination.dto';
+import { Paginated } from '../../shared';
+import { FindAllTasksQueryDto } from './dto';
 import { TaskRepository } from './task.repository';
 import { Task } from './task.types';
 
 export const TaskService = {
-  getAll(pagination: PaginationDto) {
+  getAll(pagination: FindAllTasksQueryDto): Paginated<Task> {
     const items = TaskRepository.getAll(pagination);
 
     return {
@@ -13,7 +14,8 @@ export const TaskService = {
       items,
     };
   },
-  getById(id: Task['id']) {
+
+  getById(id: Task['id']): Task {
     const task = TaskRepository.getById(id);
 
     if (!task) {
@@ -23,7 +25,7 @@ export const TaskService = {
     return task;
   },
 
-  create(dto: Omit<Task, 'id'>) {
+  create(dto: Omit<Task, 'id'>): Task {
     return TaskRepository.create(dto);
   },
 };
