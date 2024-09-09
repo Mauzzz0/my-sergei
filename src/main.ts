@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import express from 'express';
 
 import { logRoutes } from './bootstrap';
+import config from './config';
 import { privateGuard } from './guard/private.guard';
 import { logMiddleware } from './middlewares';
 import { errorHandler } from './middlewares/error.handler';
@@ -23,7 +24,9 @@ export const bootstrap = async () => {
 
   server.use(errorHandler);
 
-  server.listen(2000, () => console.log('Сервер запущен!'));
+  const port = config.PORT;
+
+  server.listen(port, () => console.log(`Сервер запущен. Порт: ${port}`));
 };
 
 bootstrap();
