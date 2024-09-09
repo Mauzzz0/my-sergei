@@ -1,8 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class ConfigDto {
   @IsNumber()
   @Type(() => Number)
-  PORT: number;
+  port: number;
+
+  @IsString()
+  token: string;
 }

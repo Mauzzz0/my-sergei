@@ -24,7 +24,7 @@ export const bootstrap = async () => {
 
   server.use(errorHandler);
 
-  const port = config.PORT;
+  const port = config.port;
 
   server.listen(port, () => console.log(`Сервер запущен. Порт: ${port}`));
 };
