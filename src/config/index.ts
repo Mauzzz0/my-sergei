@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 
 import { validate } from '../validation';
-import { ConfigDto } from './config.dto';
 import configMap from './config.map';
+import { ConfigDto } from './dto';
 
 dotenv.config();
 

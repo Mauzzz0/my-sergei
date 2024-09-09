@@ -1,4 +1,4 @@
-import { ConfigDto } from './config.dto';
+import { ConfigDto } from './dto';
 
 type EnvStructure<T = any> = {
   [Key in keyof T]: T[Key] extends object ? EnvStructure<T[Key]> : string | undefined;
@@ -6,7 +6,13 @@ type EnvStructure<T = any> = {
 
 const configMap = (): EnvStructure<ConfigDto> => ({
   port: process.env.PORT,
-  token: process.env.TELEGRAM_TOKEN,
+  postgres: {
+    host: process.env.POSTGRESQL_HOST,
+    port: process.env.POSTGRESQL_PORT,
+    username: process.env.POSTGRESQL_USERNAME,
+    password: process.env.POSTGRESQL_PASSWORD,
+    database: process.env.POSTGRESQL_DATABASE,
+  },
 });
 
 export default configMap;
