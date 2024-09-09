@@ -7,6 +7,7 @@ import { privateGuard } from './guard/private.guard';
 import { logMiddleware } from './middlewares';
 import { errorHandler } from './middlewares/error.handler';
 import { TaskRouter } from './modules/task/task.controller';
+import { setupSwagger } from './swagger/setupSwagger';
 
 export const bootstrap = async () => {
   const server = express();
@@ -18,6 +19,7 @@ export const bootstrap = async () => {
   server.use('/task', TaskRouter);
 
   logRoutes(server);
+  setupSwagger(server);
 
   server.use(errorHandler);
 
