@@ -1,6 +1,8 @@
 import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 
+import { BadRequestException } from '../errors';
+
 type Constructor<T> = {
   new (...args: any[]): T;
 };
@@ -18,7 +20,7 @@ export const validate = <T extends object, V>(cls: Constructor<T>, data: V): T =
       message = constraints[key];
     }
 
-    throw new Error(message);
+    throw new BadRequestException(message);
   }
 
   return instance;

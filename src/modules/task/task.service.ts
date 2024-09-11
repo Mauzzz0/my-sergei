@@ -1,3 +1,4 @@
+import { NotFoundException } from '../../errors';
 import { Paginated } from '../../shared';
 import { FindAllTasksQueryDto } from './dto';
 import { TaskRepository } from './task.repository';
@@ -19,7 +20,7 @@ export const TaskService = {
     const task = TaskRepository.getById(id);
 
     if (!task) {
-      throw Error(`Задача [${id}] не найдена!`);
+      throw new NotFoundException(`Задача [${id}] не найдена!`);
     }
 
     return task;

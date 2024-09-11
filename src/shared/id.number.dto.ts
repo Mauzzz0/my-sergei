@@ -1,8 +1,10 @@
 import { Type } from 'class-transformer';
-import { IsNumber } from 'class-validator';
+import { IsInt, IsNumber, IsPositive } from 'class-validator';
 
 export class IdNumberDto {
   @IsNumber()
+  @IsInt()
+  @IsPositive()
   @Type(() => Number)
   id: number;
 }
