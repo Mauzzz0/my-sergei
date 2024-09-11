@@ -4,26 +4,27 @@ import { SortBy } from '../../shared';
 import { FindAllTasksQueryDto } from './dto';
 import { Task } from './task.types';
 
-let storage: Task[] = [];
+export class TaskRepository {
+  private readonly storage: Task[] = [];
 
-const filename = 'tasks.json';
-const writeStorageToFile = () => writeFileSync(filename, JSON.stringify(storage));
+  constructor(private readonly filename: string) {
+    if (existsSync(filename)) {
+      this.storage = JSON.parse(readFileSync(filename, 'utf-8'));
+    } else {
+      this.writeStorageToFile();
+    }
+  }
 
-if (existsSync(filename)) {
-  storage = JSON.parse(readFileSync(filename, 'utf-8'));
-} else {
-  writeStorageToFile();
-}
+  private writeStorageToFile = () => writeFileSync(this.filename, JSON.stringify(this.storage));
 
-export const TaskRepository = {
   size() {
-    return storage.length;
-  },
+    return this.storage.length;
+  }
 
   getAll(pagination: FindAllTasksQueryDto): Task[] {
     const { sortBy, sort, offset, limit } = pagination;
 
-    return storage
+    return this.storage
       .sort((a, b) => {
         if (a[sort] > b[sort]) {
           return sortBy === SortBy.asc ? 1 : -1;
@@ -32,18 +33,18 @@ export const TaskRepository = {
         return sortBy === SortBy.asc ? -1 : 1;
       })
       .slice(offset, offset + limit);
-  },
+  }
 
   getById(id: Task['id']): Task | undefined {
-    return storage.find((x) => x.id === id);
-  },
+    return this.storage.find((x) => x.id === id);
+  }
 
   create(task: Omit<Task, 'id'>): Task {
-    const maxId = storage.sort((a, b) => (a.id < b.id ? 1 : -1))[0]?.id ?? 0;
+    const maxId = this.storage.sort((a, b) => (a.id < b.id ? 1 : -1))[0]?.id ?? 0;
 
-    storage.push({ ...task, id: maxId + 1 });
-    writeStorageToFile();
+    this.storage.push({ ...task, id: maxId + 1 });
+    this.writeStorageToFile();
 
-    return storage[storage.length - 1];
-  },
-};
+    return this.storage[this.storage.length - 1];
+  }
+}

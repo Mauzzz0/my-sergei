@@ -4,29 +4,31 @@ import { FindAllTasksQueryDto } from './dto';
 import { TaskRepository } from './task.repository';
 import { Task } from './task.types';
 
-export const TaskService = {
+export class TaskService {
+  constructor(private readonly repository: TaskRepository) {}
+
   getAll(pagination: FindAllTasksQueryDto): Paginated<Task> {
-    const items = TaskRepository.getAll(pagination);
+    const items = this.repository.getAll(pagination);
 
     return {
-      total: TaskRepository.size(),
+      total: this.repository.size(),
       limit: pagination.limit,
       offset: pagination.offset,
       items,
     };
-  },
+  }
 
   getById(id: Task['id']): Task {
-    const task = TaskRepository.getById(id);
+    const task = this.repository.getById(id);
 
     if (!task) {
       throw new NotFoundException(`Задача [${id}] не найдена!`);
     }
 
     return task;
-  },
+  }
 
   create(dto: Omit<Task, 'id'>): Task {
-    return TaskRepository.create(dto);
-  },
-};
+    return this.repository.create(dto);
+  }
+}
