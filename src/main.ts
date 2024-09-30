@@ -7,6 +7,7 @@ import config from './config';
 import { privateGuard } from './guard/private.guard';
 import { logMiddleware } from './middlewares';
 import { errorHandler } from './middlewares/error.handler';
+import { SessionMiddleware } from './middlewares/session.middleware';
 import { taskController } from './modules/task/task.module';
 import { setupSwagger } from './swagger/setupSwagger';
 
@@ -14,6 +15,7 @@ export const bootstrap = async () => {
   const server = express();
 
   server.use(express.json());
+  server.use(SessionMiddleware);
   server.use(logMiddleware);
   server.use(privateGuard);
 
