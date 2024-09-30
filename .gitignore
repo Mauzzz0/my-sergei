@@ -3,3 +3,4 @@
 node_modules/
 tasks.json
 .env
+.DS_Store

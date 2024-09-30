@@ -9,6 +9,7 @@ import { logMiddleware } from './middlewares';
 import { errorHandler } from './middlewares/error.handler';
 import { SessionMiddleware } from './middlewares/session.middleware';
 import { taskController } from './modules/task/task.module';
+import { userController } from './modules/user/user.module';
 import { setupSwagger } from './swagger/setupSwagger';
 
 export const bootstrap = async () => {
@@ -20,6 +21,7 @@ export const bootstrap = async () => {
   server.use(privateGuard);
 
   server.use('/task', taskController.router);
+  server.use('/user', userController.router);
 
   logRoutes(server);
   setupSwagger(server);
