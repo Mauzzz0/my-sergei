@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { authGuard } from '../../guard';
 import { BaseController, IdNumberDto } from '../../shared';
 import { Route } from '../../shared/types';
 import { validate } from '../../validation';
@@ -13,10 +14,12 @@ export class TaskController extends BaseController {
   }
 
   initRoutes() {
+    const middlewares = [authGuard];
+
     const routes: Route[] = [
-      { path: '/', handler: this.getAll },
-      { path: '/:id', handler: this.getById },
-      { path: '/', method: 'post', handler: this.create },
+      { path: '/', handler: this.getAll, middlewares },
+      { path: '/:id', handler: this.getById, middlewares },
+      { path: '/', method: 'post', handler: this.create, middlewares },
     ];
 
     this.addRoute(routes);

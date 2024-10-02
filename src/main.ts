@@ -4,7 +4,6 @@ import express from 'express';
 
 import { logRoutes } from './bootstrap';
 import config from './config';
-import { privateGuard } from './guard/private.guard';
 import { logMiddleware } from './middlewares';
 import { errorHandler } from './middlewares/error.handler';
 import { SessionMiddleware } from './middlewares/session.middleware';
@@ -18,7 +17,6 @@ export const bootstrap = async () => {
   server.use(express.json());
   server.use(SessionMiddleware);
   server.use(logMiddleware);
-  server.use(privateGuard);
 
   server.use('/task', taskController.router);
   server.use('/user', userController.router);

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { UnauthorizedException } from '../../errors';
+import { authGuard } from '../../guard';
 import { BaseController } from '../../shared';
 import { Route } from '../../shared/types';
 import { validate } from '../../validation';
@@ -17,7 +18,7 @@ export class UserController extends BaseController {
     const routes: Route[] = [
       { path: '/login', method: 'post', handler: this.login },
       { path: '/register', method: 'post', handler: this.register },
-      { path: '/profile', handler: this.profile },
+      { path: '/profile', handler: this.profile, middlewares: [authGuard] },
     ];
 
     this.addRoute(routes);
