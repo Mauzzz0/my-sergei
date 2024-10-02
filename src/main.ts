@@ -5,6 +5,7 @@ import express from 'express';
 
 import { logRoutes } from './bootstrap';
 import config from './config';
+import { connectPg } from './database/connect.pg';
 import { logMiddleware } from './middlewares';
 import { errorHandler } from './middlewares/error.handler';
 import { SessionMiddleware } from './middlewares/session.middleware';
@@ -13,6 +14,8 @@ import { userController } from './modules/user/user.module';
 import { setupSwagger } from './swagger/setupSwagger';
 
 export const bootstrap = async () => {
+  await connectPg();
+
   const server = express();
 
   server.use(express.json());
