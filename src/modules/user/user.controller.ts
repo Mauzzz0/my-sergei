@@ -25,30 +25,30 @@ export class UserController extends BaseController {
     this.addRoute(routes);
   }
 
-  profile(req: Request, res: Response) {
+  async profile(req: Request, res: Response) {
     const id = req.session.user?.id;
     if (!id) {
       throw new UnauthorizedException();
     }
 
-    const user = this.service.profile(id);
+    const user = await this.service.profile(id);
     res.json(user);
   }
 
-  login(req: Request, res: Response) {
+  async login(req: Request, res: Response) {
     const dto = validate(LoginDto, req.body);
 
-    const user = this.service.login(dto);
+    const user = await this.service.login(dto);
 
     req.session.user = { id: user.id };
 
     res.json(user);
   }
 
-  register(req: Request, res: Response) {
+  async register(req: Request, res: Response) {
     const dto = validate(LoginDto, req.body);
 
-    const user = this.service.register(dto);
+    const user = await this.service.register(dto);
 
     res.json(user);
   }

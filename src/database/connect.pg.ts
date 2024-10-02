@@ -1,8 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import config from '../config';
-import { UserModel } from './models';
-import { TaskModel } from './models/task.model';
+import { TaskModel, UserModel } from './models';
 
 export const connectPg = async () => {
   const sequelize = new Sequelize({

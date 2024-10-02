@@ -1,25 +1,23 @@
+import { TaskModel } from '../../database/models';
 import { NotFoundException } from '../../errors';
 import { Paginated } from '../../shared';
-import { FindAllTasksQueryDto } from './dto';
-import { TaskRepository } from './task.repository';
-import { Task } from './task.types';
+import { CreateTaskDto, FindAllTasksQueryDto } from './dto';
 
 export class TaskService {
-  constructor(private readonly repository: TaskRepository) {}
-
-  getAll(pagination: FindAllTasksQueryDto): Paginated<Task> {
-    const items = this.repository.getAll(pagination);
+  async getAll(pagination: FindAllTasksQueryDto): Promise<Paginated<TaskModel>> {
+    // TODO: sort, sortBy
+    const { rows, count } = await TaskModel.findAndCountAll(pagination);
 
     return {
-      total: this.repository.size(),
+      total: count,
       limit: pagination.limit,
       offset: pagination.offset,
-      items,
+      items: rows,
     };
   }
 
-  getById(id: Task['id']): Task {
-    const task = this.repository.getById(id);
+  async getById(id: TaskModel['id']): Promise<TaskModel> {
+    const task = await TaskModel.findByPk(id);
 
     if (!task) {
       throw new NotFoundException(`Задача [${id}] не найдена!`);
@@ -28,7 +26,10 @@ export class TaskService {
     return task;
   }
 
-  create(dto: Omit<Task, 'id'>): Task {
-    return this.repository.create(dto);
+  async create(dto: CreateTaskDto): Promise<TaskModel> {
+    return TaskModel.create({
+      title: dto.title,
+      description: dto.description,
+    });
   }
 }

@@ -1,12 +1,10 @@
-import { NotFoundException, UnauthorizedException } from '../../errors';
-import { UserRepository } from './user.repository';
-import { LoginDto, User } from './user.types';
+import { UserModel } from '../../database/models';
+import { BadRequestException, NotFoundException, UnauthorizedException } from '../../errors';
+import { LoginDto } from './user.types';
 
 export class UserService {
-  constructor(private readonly repository: UserRepository) {}
-
-  profile(id: User['id']): User {
-    const user = this.repository.getOneById(id);
+  async profile(id: UserModel['id']): Promise<UserModel> {
+    const user = await UserModel.findByPk(id);
 
     if (!user) {
       throw new NotFoundException();
@@ -15,8 +13,8 @@ export class UserService {
     return user;
   }
 
-  login(dto: LoginDto): User {
-    const user = this.repository.getByNick(dto.nick);
+  async login(dto: LoginDto): Promise<UserModel> {
+    const user = await UserModel.findOne({ where: { nick: dto.nick } });
 
     if (!user || user.password !== dto.password) {
       throw new UnauthorizedException();
@@ -25,7 +23,15 @@ export class UserService {
     return user;
   }
 
-  register(dto: LoginDto): User {
-    return this.repository.register(dto);
+  async register(dto: LoginDto): Promise<UserModel> {
+    const user = await UserModel.findOne({ where: { nick: dto.nick } });
+    if (user) {
+      throw new BadRequestException(`Пользователь с ником [${dto.nick}] уже существует!`);
+    }
+
+    return await UserModel.create({
+      nick: dto.nick,
+      password: dto.password,
+    });
   }
 }

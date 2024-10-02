@@ -25,24 +25,24 @@ export class TaskController extends BaseController {
     this.addRoute(routes);
   }
 
-  getAll(req: Request, res: Response) {
+  async getAll(req: Request, res: Response) {
     const query = validate(FindAllTasksQueryDto, req.query);
-    const result = this.service.getAll(query);
+    const result = await this.service.getAll(query);
     res.json(result);
   }
 
-  getById(req: Request, res: Response) {
+  async getById(req: Request, res: Response) {
     const { id } = validate(IdNumberDto, req.params);
 
-    const task = this.service.getById(id);
+    const task = await this.service.getById(id);
 
     res.json(task);
   }
 
-  create(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     const dto = validate(CreateTaskDto, req.body);
 
-    const task = this.service.create(dto);
+    const task = await this.service.create(dto);
 
     res.json(task);
   }
