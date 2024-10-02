@@ -19,6 +19,7 @@ export class UserController extends BaseController {
       { path: '/login', method: 'post', handler: this.login },
       { path: '/register', method: 'post', handler: this.register },
       { path: '/profile', handler: this.profile, middlewares: [authGuard] },
+      { path: '/logout', method: 'post', handler: this.logout, middlewares: [authGuard] },
     ];
 
     this.addRoute(routes);
@@ -50,5 +51,9 @@ export class UserController extends BaseController {
     const user = this.service.register(dto);
 
     res.json(user);
+  }
+
+  logout(req: Request, res: Response) {
+    req.session.destroy(() => res.json({ success: true }));
   }
 }
